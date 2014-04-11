@@ -316,6 +316,17 @@ void node_vorbis_bitrate_flushpacket_after (uv_work_t *req) {
   }
 }
 
+Handle<Value> node_vorbis_comment_add_tag (const Arguments& args) {
+  HandleScope scope;
+  vorbis_comment *vc = UnwrapPointer<vorbis_comment *>(args[0]);
+  String::Utf8Value tag(args[1]);
+  String::Utf8Value contents(args[2]);
+
+  vorbis_comment_add_tag(vc, *tag, *contents);
+
+  return Undefined();
+}
+
 
 /* vorbis_synthesis_idheader() called on the thread pool */
 Handle<Value> node_vorbis_synthesis_idheader (const Arguments& args) {
@@ -500,6 +511,7 @@ void Initialize(Handle<Object> target) {
   NODE_SET_METHOD(target, "vorbis_analysis_init", node_vorbis_analysis_init);
   NODE_SET_METHOD(target, "vorbis_block_init", node_vorbis_block_init);
   NODE_SET_METHOD(target, "vorbis_encode_init_vbr", node_vorbis_encode_init_vbr);
+  NODE_SET_METHOD(target, "vorbis_comment_add_tag", node_vorbis_comment_add_tag);
   NODE_SET_METHOD(target, "vorbis_analysis_headerout", node_vorbis_analysis_headerout);
   NODE_SET_METHOD(target, "vorbis_analysis_write", node_vorbis_analysis_write);
   NODE_SET_METHOD(target, "vorbis_analysis_blockout", node_vorbis_analysis_blockout);
